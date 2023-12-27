@@ -3,9 +3,6 @@ import Product from "../schemas/products.schema.js"
 
 const router = express.Router()
 
-
-
-
 //상품 목록 조회
 router.get('/products', async(req, res) => {
     const products = await Product.find().sort('-createdAt').exec()
@@ -80,7 +77,6 @@ router.patch('/products/:productId', async(req, res) => {
 })
 
 // 5. 상품 삭제 API
-
 router.delete('/products/:productId', async(req, res) => {
     const { productId } = req.params
     const {password} = req.body

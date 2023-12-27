@@ -12,7 +12,6 @@ app.use(express.urlencoded({extended:true}))
 
 const router = express.Router()
 
-
 app.use('/api', [router, productsRouter])
 
 app.listen(port, () => {
