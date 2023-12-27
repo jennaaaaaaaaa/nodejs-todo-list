@@ -47,7 +47,11 @@ router.post('/products', async(req, res) => {
 router.patch('/products/:productId', async(req, res) => {
     //변경할 상품 id
     const { productId } = req.params
-    const {title, content, status, password} = req.body
+    const {title, content, password} = req.body
+
+    if(!title || !content || !password) {
+        return res.status(400).json({errorMessage: "데이터 형식이 올바르지 않습니다"});
+    }
 
     //변경할 상품 정보를 가져온다
     const findByProductId = await Product.findById(productId)
@@ -63,12 +67,8 @@ router.patch('/products/:productId', async(req, res) => {
     const modifyProduct = await Product.findByIdAndUpdate(productId, {
         title: title,
         content: content,
-        status: status
+        status: "SOLD_OUT"
     })
-
-    if(!title || !content || !author || !password) {
-        return res.status(400).json({errorMessage: "데이터 형식이 올바르지 않습니다"});
-    }
 
     await modifyProduct.save()
 
