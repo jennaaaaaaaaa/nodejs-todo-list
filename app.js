@@ -15,5 +15,5 @@ const router = express.Router()
 app.use('/api', [router, productsRouter])
 
 app.listen(port, () => {
-    console.log(port, '서버 열림')
+    console.log(port, '서버가 열렸습니다')
 })

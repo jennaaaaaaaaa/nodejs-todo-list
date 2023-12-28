@@ -69,7 +69,6 @@ router.post('/products', async(req, res) => {
     
 })
 
-
 //상품 정보 수정
 router.patch('/products/:productId', async(req, res) => {
     
