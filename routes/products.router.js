@@ -7,26 +7,41 @@ const router = express.Router()
 router.get('/products', async(req, res) => {
     // const products = await Product.find().sort('-createdAt').exec()
     const products = await Product.find({}, {_id:1, title:1, content:1, author:1, password:1, status:1, createdAt:1} ).sort('-createdAt').exec()
-    return res.status(200).json({products})
+
+    const data = products.map(product => ({
+        id: product._id,
+        title: product.title,
+        content: product.content,
+        author: product.author,
+        password: product.password,
+        status: product.status,
+        createdAt: product.createdAt
+    }))
+    
+    return res.status(200).json(data)
 })
 
 
 //상품 상세조회
 router.get('/products/:productId', async(req, res) => {
     try{
-        const { productId } = req.params
-
-        if(!productId) {
-            return res.status(400).json({message: "데이터 형식이 올바르지 않습니다"});
-        }
-        
+        const { productId } = req.params        
         const detailProduct = await Product.findById(productId).exec()
 
         if(!detailProduct){
             return res.status(404).json({errorMessage: "상품 조회에 실패하였습니다."})
         }
 
-        return res.status(200).json({detailProduct})
+        const product = {
+            id: detailProduct._id,
+            title: detailProduct.title,
+            content: detailProduct.content,
+            author: detailProduct.author,
+            password: detailProduct.password,
+            status: detailProduct.status,
+            createdAt: detailProduct.createdAt
+        }
+        return res.status(200).json(product)
 
     }catch(error){
         return res.status(500).json({message: error.message})
@@ -84,10 +99,7 @@ router.patch('/products/:productId', async(req, res) => {
 
     }catch(error){
         return res.status(500).json({message: error.message})
-    }
-    
-
-    
+    }    
 })
 
 // 5. 상품 삭제 API
